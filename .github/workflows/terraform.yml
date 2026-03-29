@@ -1,0 +1,60 @@
+name: Terraform Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set environment and backend key dynamically based on branch
+      - name: Set environment variables
+        run: |
+          echo "Detected branch: $GITHUB_REF"
+          if [[ "$GITHUB_REF" == "refs/heads/develop" ]]; then
+            echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+            echo "BACKEND_KEY=dev.terraform.tfstate" >> $GITHUB_ENV
+          elif [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+            echo "BACKEND_KEY=prod.terraform.tfstate" >> $GITHUB_ENV
+          else
+            echo "Branch not configured for Terraform deployment."
+            exit 1
+          fi
+
+      # Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: latest
+
+      # Terraform Init with backend config
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=rg-terraform-state" \
+            -backend-config="storage_account_name=opellatfstate" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=${{ env.BACKEND_KEY }}"
+
+      # Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan -var="environment=${{ env.ENVIRONMENT }}" -out=tfplan
+
+      # Terraform Apply
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan
