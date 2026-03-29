@@ -65,5 +65,14 @@ module "network" {
   }
 }
 
+## Code Quality & Maintenance:
+To ensure long-term maintainability, I recommend:
+
+terraform fmt: Run as a pre-commit hook to maintain style consistency. (https://developer.hashicorp.com/terraform/cli/commands/fmt)
+
+Checkov/TFSec: Static analysis tools to catch security misconfigurations (like open SSH ports) before they reach Azure.
+
+TFLint: To catch provider-specific errors that standard Terraform validation might miss. (https://spacelift.io/blog/what-is-tflint)
+
 ## Automation Tip
 To automate documentation for this module, I recommend using terraform-docs. It can be integrated into the CI/CD pipeline to automatically update a README.md inside the module folder whenever variables change.
