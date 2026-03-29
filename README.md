@@ -3,7 +3,7 @@
 Azure Infrastructure Challenge: Reusable VNet Module
 This repository contains a Terraform-based solution for provisioning a modular and scalable Azure environment. It demonstrates the use of a custom VNet module to deploy isolated environments (Development and Production) using a single-subscription, multi-resource-group strategy.
 
-🏗 Architecture Overview
+## 🏗 Architecture Overview
 The project is structured to support environment parity while allowing for environment-specific configurations (such as IP addressing and VM sizing).
 
 Custom VNet Module: A reusable component that handles VNet creation, dynamic subnetting via for_each, and basic security through Network Security Groups (NSG).
@@ -16,8 +16,7 @@ Compute: A Linux VM (Ubuntu 22.04) serves as the primary application host.
 
 Storage: A Standard LRS Storage Account is included for diagnostic logging and persistent data.
 
-📁 Repository Structure
-Plaintext
+## 📁 Repository Structure
 .
 ├── modules/
 │   └── vnet/               # Reusable Networking Module
@@ -30,7 +29,7 @@ Plaintext
 ├── backend.tf              # Remote state configuration (Azure Blob)
 └── .github/workflows/      # CI/CD Pipeline (GitHub Actions)
 
-🛠 Design Decisions & Justifications
+## 🛠 Design Decisions & Justifications
 1. Resource Groups vs. Subscriptions
 For this challenge, I utilized Resource Groups to separate environments.
 
@@ -44,17 +43,16 @@ I implemented a locals block in the root main.tf to manage a name_prefix and com
 3. Security
 The VNet module includes a default Network Security Group (NSG) that restricts inbound traffic. Associations are handled dynamically within the module to ensure no subnet is left "open" by default.
 
-🚀 CI/CD Pipeline
+## 🚀 CI/CD Pipeline
 The deployment is automated via GitHub Actions.
 
 Branch Strategy: Pushes to develop trigger a plan and apply to the Dev environment. Pushes to main target the Production state.
 
 State Management: Terraform state is stored securely in an Azure Blob Storage container, with unique keys for each environment to prevent state corruption.
 
-📖 How to Use This Module
+## 📖 How to Use This Module
 To use the VNet module in another project:
 
-Terraform
 module "network" {
   source              = "./modules/vnet"
   vnet_name           = "my-app-vnet"
@@ -67,6 +65,5 @@ module "network" {
   }
 }
 
-
-Automation Tip
+## Automation Tip
 To automate documentation for this module, I recommend using terraform-docs. It can be integrated into the CI/CD pipeline to automatically update a README.md inside the module folder whenever variables change.
