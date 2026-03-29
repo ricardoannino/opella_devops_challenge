@@ -29,20 +29,6 @@ Storage: A Standard LRS Storage Account is included for diagnostic logging and p
 ├── backend.tf              # Remote state configuration (Azure Blob)
 └── .github/workflows/      # CI/CD Pipeline (GitHub Actions)
 
-├── modules/
-│   └── vnet/               # Reusable Networking Module
-│       ├── main.tf         # VNet, Subnets, and NSG logic
-│       ├── variables.tf    # Module inputs (CIDR, RG Name, etc.)
-│       └── outputs.tf      # Subnet IDs and VNet ID for downstream resources
-├── main.tf                 # Root configuration (RG, VM, Storage)
-├── variables.tf            # Global variables
-├── outputs.tf              # Essential connection strings and IDs
-├── backend.tf              # Remote state configuration (Azure Blob)
-└── .github/
-└── workflows/
-
-└── terraform.yml   # CI/CD Pipeline (GitHub Actions)
-
 ## Design Decisions & Justifications
 1. Resource Groups vs. Subscriptions
 For this challenge, I utilized Resource Groups to separate environments.
