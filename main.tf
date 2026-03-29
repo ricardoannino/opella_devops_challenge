@@ -51,7 +51,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "${local.name_prefix}-vm"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  size                = "Standard_B1s" # Chosen for cost-effectiveness in Dev
+  size                = "Standard_F1als_v7" # Chosen for cost-effectiveness in Dev
   admin_username      = "opellaadmin"
   
   network_interface_ids = [azurerm_network_interface.nic.id]
@@ -68,7 +68,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
+    sku       = "22_04-lts-gen2"
     version   = "latest"
   }
 
