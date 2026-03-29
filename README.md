@@ -29,6 +29,7 @@ Plaintext
 ├── outputs.tf              # Essential connection strings and IDs
 ├── backend.tf              # Remote state configuration (Azure Blob)
 └── .github/workflows/      # CI/CD Pipeline (GitHub Actions)
+
 🛠 Design Decisions & Justifications
 1. Resource Groups vs. Subscriptions
 For this challenge, I utilized Resource Groups to separate environments.
@@ -65,5 +66,7 @@ module "network" {
     backend  = "10.0.2.0/24"
   }
 }
+
+
 Automation Tip
 To automate documentation for this module, I recommend using terraform-docs. It can be integrated into the CI/CD pipeline to automatically update a README.md inside the module folder whenever variables change.
