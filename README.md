@@ -74,5 +74,19 @@ Checkov/TFSec: Static analysis tools to catch security misconfigurations (like o
 
 TFLint: To catch provider-specific errors that standard Terraform validation might miss. (https://spacelift.io/blog/what-is-tflint)
 
+Ansible as Configuration Management: 
+Terraform is a "Provisioning" tool (it builds the infra), but Ansible is a "Configuration" tool (it configures and installs).
+
+Why I recommend it: Once the Virtual Machine is running, Ansible can be used to securely install web servers (Nginx/Apache), manage users, and deploy application code over SSH without needing to rebuild the VM every time a setting changes.
+
+Benefit: It ensures "Configuration Drift" is minimized across Dev and Prod environments.
+
+Bicep as Azure-Native Alternative:
+For teams heavily invested in the Azure ecosystem, Bicep is a powerful alternative to standard ARM templates.
+
+Why I recommend it: Bicep offers "Day Zero" support for new Azure features and provides a more concise, readable syntax than JSON-based templates.
+
+Benefit: It integrates deeply with Azure CLI and Enterprise-scale landing zones, making it an excellent choice for modular, Azure-specific resource deployments where Terraform might have provider delays.
+
 ## Automation Tip
 To automate documentation for this module, I recommend using terraform-docs. It can be integrated into the CI/CD pipeline to automatically update a README.md inside the module folder whenever variables change.
